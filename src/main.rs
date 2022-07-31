@@ -6,12 +6,12 @@ use dotenv::dotenv;
 use rand::prelude::SliceRandom;
 use serde::Deserialize;
 use serenity::builder::CreateButton;
+use serenity::model::prelude::application_command::ApplicationCommandInteraction;
 use serenity::model::prelude::interaction::message_component::MessageComponentInteraction;
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 use std::env;
 use std::time::{Duration, Instant};
-use serenity::model::prelude::application_command::ApplicationCommandInteraction;
 
 const COMMAND_SETUP_FAN_APPLICATION_CHANNEL: &str = "setupfanapplicationchannel";
 const BUTTON_FAN_APPLICATION: &str = "buttonsetupapplication";
@@ -206,7 +206,10 @@ impl FanClubBot {
             .clone()
             .expect("Couldn't get interaction author");
         let mut application_state = self.fan_applications.get_mut(&member.user.id).unwrap();
-        assert_eq!(application_state.questions.len(), self.config.fan_application_questions);
+        assert_eq!(
+            application_state.questions.len(),
+            self.config.fan_application_questions
+        );
 
         let current_question = &application_state.questions[application_state.current_question];
         assert!(answer_index < current_question.answers.len());
